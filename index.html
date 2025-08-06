@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background: #fff;
             padding: 20px 40px;
@@ -29,25 +29,38 @@
             margin-bottom: 20px;
             border-bottom: 1px solid #eee;
             padding-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         .question-text {
             font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 10px;
+            font-size: 1em;
+            white-space: nowrap;
+            min-width: 250px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1;
         }
         .options label {
-            display: block;
-            margin: 5px 0;
-            cursor: pointer;
-            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background-color: #f0f0f0;
             border-radius: 5px;
+            cursor: pointer;
             transition: background-color 0.2s;
         }
         .options label:hover {
             background-color: #e2e2e2;
         }
         .options input[type="radio"] {
-            margin-right: 10px;
+            margin: 0;
         }
         .submit-btn {
             display: block;
@@ -90,16 +103,13 @@
 <body>
     <div class="container">
         <h1>Python Data Structures & Recursion Quiz</h1>
-        <form id="quiz-form">
-            </form>
+        <form id="quiz-form"></form>
         <button class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
-        <div id="results-container" class="results">
-            </div>
+        <div id="results-container" class="results"></div>
     </div>
 
     <script>
         const quizQuestions = [
-            // Lists
             { question: "How do you define an empty list in Python?", options: ["A. my_list = ()", "B. my_list = {}", "C. my_list = []", "D. my_list = new List()"], answer: "C" },
             { question: "Which method adds an item to the end of a list?", options: ["A. insert()", "B. push()", "C. add()", "D. append()"], answer: "D" },
             { question: "What is the index of the first element in a Python list?", options: ["A. 1", "B. 0", "C. -1", "D. list.start"], answer: "B" },
@@ -107,8 +117,6 @@
             { question: "Which of these is a mutable data structure?", options: ["A. tuple", "B. string", "C. list", "D. frozenset"], answer: "C" },
             { question: "How can you access the third element of a list named `data`?", options: ["A. data(2)", "B. data[3]", "C. data[2]", "D. data.get(3)"], answer: "C" },
             { question: "Which method removes a specified value from a list?", options: ["A. delete()", "B. discard()", "C. remove()", "D. pop()"], answer: "C" },
-            
-            // Tuples
             { question: "How do you define a tuple in Python?", options: ["A. Using []", "B. Using {}", "C. Using ()", "D. Using <>"], answer: "C" },
             { question: "Can you change an element in a tuple after it's created?", options: ["A. Yes, using the modify() method.", "B. Yes, if the element is a list.", "C. No, tuples are immutable.", "D. Only if the tuple has two elements."], answer: "C" },
             { question: "What is the correct way to define a tuple with a single element 'hello'?", options: ["A. ('hello')", "B. ['hello']", "C. ('hello',)", "D. 'hello'"], answer: "C" },
@@ -116,8 +124,6 @@
             { question: "Which of the following is a valid use case for a tuple?", options: ["A. Storing a collection of items that will be frequently modified.", "B. Representing RGB color values (255, 0, 0).", "C. A shopping list where items can be added and removed.", "D. A queue of tasks to be processed."], answer: "B" },
             { question: "How do you get the number of elements in a tuple named `my_tuple`?", options: ["A. my_tuple.count()", "B. len(my_tuple)", "C. my_tuple.size()", "D. count(my_tuple)"], answer: "B" },
             { question: "What will happen if you try to assign a new value to a tuple index?", options: ["A. A new tuple is created.", "B. The value is updated.", "C. A `TypeError` is raised.", "D. Nothing, it's ignored."], answer: "C" },
-            
-            // Recursive Functions
             { question: "What is recursion?", options: ["A. A function that calls another function.", "B. A loop that never ends.", "C. A function that calls itself.", "D. A function that uses a list."], answer: "C" },
             { question: "What is the 'base case' in a recursive function?", options: ["A. The point where the function begins.", "B. The condition that stops the recursion.", "C. The first recursive call.", "D. The maximum number of calls."], answer: "B" },
             { question: "Without a base case, what will likely happen when a recursive function is called?", options: ["A. It will run indefinitely.", "B. It will return an empty value.", "C. It will raise a `RecursionError`.", "D. It will print an error message."], answer: "C" },
@@ -153,7 +159,7 @@
                     label.setAttribute('for', optionId);
                     label.textContent = option;
                     
-                    optionsDiv.appendChild(input);
+                    label.prepend(input);
                     optionsDiv.appendChild(label);
                 });
                 
@@ -189,12 +195,9 @@
             resultsHtml += `<hr><h3>Final Score: ${score} out of ${quizQuestions.length}</h3>`;
             resultsContainer.innerHTML = resultsHtml;
             resultsContainer.style.display = 'block';
-            
-            // Scroll to results
             resultsContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Initialize the quiz when the page loads
         document.addEventListener('DOMContentLoaded', renderQuiz);
     </script>
 </body>
