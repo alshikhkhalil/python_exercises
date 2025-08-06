@@ -1,199 +1,289 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Python Data Structures & Recursion Quiz</title>
+  <title>List and Tuple Quiz</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      color: #333;
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 40px;
+      background-color: #f9f9f9;
     }
     h1 {
-      text-align: center;
-      color: #4CAF50;
+      color: #333;
     }
     .question {
       margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
+      padding: 15px;
+      background-color: #fff;
+      border-left: 4px solid #007bff;
     }
-    .question-text {
-      font-weight: bold;
-      font-size: 1em;
-      margin-right: 15px;
-      white-space: nowrap;
+    .question p {
+      white-space: pre-wrap;
     }
-    .options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .options label {
-      display: inline-flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 5px 8px;
-      background-color: #f0f0f0;
-      border-radius: 5px;
-      transition: background-color 0.2s;
-    }
-    .options label:hover {
-      background-color: #e2e2e2;
-    }
-    .options input[type="radio"] {
-      margin-right: 6px;
-    }
-    .submit-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1.2em;
-      color: #fff;
-      background-color: #4CAF50;
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
-    .submit-btn:hover {
-      background-color: #45a049;
-    }
-    .results {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      display: none;
-    }
-    .results h2 {
-      color: #333;
-      border-bottom: 2px solid #4CAF50;
-      padding-bottom: 10px;
-    }
-    .correct {
-      color: green;
-      font-weight: bold;
-    }
-    .incorrect {
-      color: red;
-      font-weight: bold;
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Python Data Structures & Recursion Quiz</h1>
-    <form id="quiz-form"></form>
-    <button class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
-    <div id="results-container" class="results"></div>
-  </div>
 
-  <script>
-    const quizQuestions = [
-      { question: "How do you define an empty list in Python?", options: ["A. my_list = ()", "B. my_list = {}", "C. my_list = []", "D. my_list = new List()"], answer: "C" },
-      { question: "Which method adds an item to the end of a list?", options: ["A. insert()", "B. push()", "C. add()", "D. append()"], answer: "D" },
-      { question: "What is the index of the first element in a Python list?", options: ["A. 1", "B. 0", "C. -1", "D. list.start"], answer: "B" },
-      { question: "What will `my_list.pop()` do?", options: ["A. Remove and return the first item.", "B. Remove and return the last item.", "C. Add an item.", "D. Do nothing."], answer: "B" },
-      { question: "Which of these is a mutable data structure?", options: ["A. tuple", "B. string", "C. list", "D. frozenset"], answer: "C" },
-      { question: "How can you access the third element of a list named `data`?", options: ["A. data(2)", "B. data[3]", "C. data[2]", "D. data.get(3)"], answer: "C" },
-      { question: "Which method removes a specified value from a list?", options: ["A. delete()", "B. discard()", "C. remove()", "D. pop()"], answer: "C" },
-      { question: "How do you define a tuple in Python?", options: ["A. Using []", "B. Using {}", "C. Using ()", "D. Using <>"], answer: "C" },
-      { question: "Can you change an element in a tuple after it's created?", options: ["A. Yes, using the modify() method.", "B. Yes, if the element is a list.", "C. No, tuples are immutable.", "D. Only if the tuple has two elements."], answer: "C" },
-      { question: "What is the correct way to define a tuple with a single element 'hello'?", options: ["A. ('hello')", "B. ['hello']", "C. ('hello',)", "D. 'hello'"], answer: "C" },
-      { question: "Which of these is a key difference between lists and tuples?", options: ["A. Tuples are slower than lists.", "B. Lists can store numbers, tuples cannot.", "C. Lists are mutable, tuples are immutable.", "D. Tuples can be nested, lists cannot."], answer: "C" },
-      { question: "Which of the following is a valid use case for a tuple?", options: ["A. Storing a collection of items that will be frequently modified.", "B. Representing RGB color values (255, 0, 0).", "C. A shopping list where items can be added and removed.", "D. A queue of tasks to be processed."], answer: "B" },
-      { question: "How do you get the number of elements in a tuple named `my_tuple`?", options: ["A. my_tuple.count()", "B. len(my_tuple)", "C. my_tuple.size()", "D. count(my_tuple)"], answer: "B" },
-      { question: "What will happen if you try to assign a new value to a tuple index?", options: ["A. A new tuple is created.", "B. The value is updated.", "C. A `TypeError` is raised.", "D. Nothing, it's ignored."], answer: "C" },
-      { question: "What is recursion?", options: ["A. A function that calls another function.", "B. A loop that never ends.", "C. A function that calls itself.", "D. A function that uses a list."], answer: "C" },
-      { question: "What is the 'base case' in a recursive function?", options: ["A. The point where the function begins.", "B. The condition that stops the recursion.", "C. The first recursive call.", "D. The maximum number of calls."], answer: "B" },
-      { question: "Without a base case, what will likely happen when a recursive function is called?", options: ["A. It will run indefinitely.", "B. It will return an empty value.", "C. It will raise a `RecursionError`.", "D. It will print an error message."], answer: "C" },
-      { question: "What is the typical structure of a recursive function?", options: ["A. A base case and a loop.", "B. A base case and a recursive step.", "C. Two separate functions.", "D. A base case and an `if-else` statement."], answer: "B" },
-      { question: "What does the recursive function `factorial(n)` do?", options: ["A. Returns n + (n-1) + ... + 1", "B. Returns n * (n-1) * ... * 1", "C. Returns 2 * n", "D. Returns n / (n-1)"], answer: "B" },
-      { question: "Why is recursion a powerful tool in programming?", options: ["A. It is always faster than loops.", "B. It can solve problems with repetitive structures elegantly.", "C. It uses less memory than loops.", "D. It is the only way to solve certain problems."], answer: "B" }
-    ];
+<h1>List and Tuple Quiz</h1>
 
-    const quizForm = document.getElementById("quiz-form");
-    const resultsContainer = document.getElementById("results-container");
+<div id="quiz-container"></div>
+<button onclick="submitQuiz()">Submit</button>
+<p id="result"></p>
 
-    function renderQuiz() {
-      quizQuestions.forEach((q, index) => {
-        const questionDiv = document.createElement("div");
-        questionDiv.classList.add("question");
+<script>
+const quizQuestions = [
+  {
+    question: "How do you define an empty list in Python?",
+    options: ["A. my_list = ()", "B. my_list = {}", "C. my_list = []", "D. my_list = new List()"],
+    answer: "C"
+  },
+  {
+    question: "Which method adds an item to the end of a list?",
+    options: ["A. insert()", "B. push()", "C. add()", "D. append()"],
+    answer: "D"
+  },
+  {
+    question: "What is the index of the first element in a Python list?",
+    options: ["A. 1", "B. 0", "C. -1", "D. list.start"],
+    answer: "B"
+  },
+  {
+    question: "What will my_list.pop() do?",
+    options: ["A. Remove and return the first item.", "B. Remove and return the last item.", "C. Add an item.", "D. Do nothing."],
+    answer: "B"
+  },
+  {
+    question: "Which of these is a mutable data structure?",
+    options: ["A. tuple", "B. string", "C. list", "D. frozenset"],
+    answer: "C"
+  },
+  {
+    question: "How can you access the third element of a list named data?",
+    options: ["A. data(2)", "B. data[3]", "C. data[2]", "D. data.get(3)"],
+    answer: "C"
+  },
+  {
+    question: "Which method removes a specified value from a list?",
+    options: ["A. delete()", "B. discard()", "C. remove()", "D. pop()"],
+    answer: "C"
+  },
+  {
+    question: "How do you define a tuple in Python?",
+    options: ["A. Using []", "B. Using {}", "C. Using ()", "D. Using <>"],
+    answer: "C"
+  },
+  {
+    question: "Can you change an element in a tuple after it's created?",
+    options: ["A. Yes, using the modify() method.", "B. Yes, if the element is a list.", "C. No, tuples are immutable.", "D. Only if the tuple has two elements."],
+    answer: "C"
+  },
+  {
+    question: "What is the correct way to define a tuple with a single element 'hello'?",
+    options: ["A. ('hello')", "B. ['hello']", "C. ('hello',)", "D. 'hello'"],
+    answer: "C"
+  },
+  {
+    question: "Which of these is a key difference between lists and tuples?",
+    options: ["A. Tuples are slower than lists.", "B. Lists can store numbers, tuples cannot.", "C. Lists are mutable, tuples are immutable.", "D. Tuples can be nested, lists cannot."],
+    answer: "C"
+  },
+  {
+    question: "Which of the following is a valid use case for a tuple?",
+    options: ["A. Storing a collection of items that will be frequently modified.", "B. Representing RGB color values (255, 0, 0).", "C. A shopping list where items can be added and removed.", "D. A queue of tasks to be processed."],
+    answer: "B"
+  },
+  {
+    question: "How do you get the number of elements in a tuple named my_tuple?",
+    options: ["A. my_tuple.count()", "B. len(my_tuple)", "C. my_tuple.size()", "D. count(my_tuple)"],
+    answer: "B"
+  },
+  {
+    question: "What will happen if you try to assign a new value to a tuple index?",
+    options: ["A. A new tuple is created.", "B. The value is updated.", "C. A TypeError is raised.", "D. Nothing, it's ignored."],
+    answer: "C"
+  },
+  {
+    question: `Consider the following code:
+def get_score(total = 0, valid = 0):
+    result = int(valid)/int(total)
+    return result
 
-        const questionText = document.createElement("div");
-        questionText.classList.add("question-text");
-        questionText.textContent = `${index + 1}. ${q.question}`;
+Which statement is incorrect?`,
+    options: [
+      "A. score = get_score(40,4)",
+      "B. score = get_score('40','4')",
+      "C. score = get_score(40)",
+      "D. score = get_score(0,10)"
+    ],
+    answer: "D"
+  },
+  {
+    question: `Consider the following code:
+data = []
 
-        const optionsDiv = document.createElement("div");
-        optionsDiv.classList.add("options");
+def get_data():
+    for i in range(1,5):
+        marks = input("Enter Marks")
+        data.append(marks)
 
-        q.options.forEach((option, optionIndex) => {
-          const optionId = `q${index}-option${optionIndex}`;
-          const input = document.createElement("input");
-          input.type = "radio";
-          input.name = `question-${index}`;
-          input.value = option.charAt(0);
-          input.id = optionId;
+def get_avg():
+    sum = 0
+    for mark in data:
+        sum += mark
+    return sum / len(data)
 
-          const label = document.createElement("label");
-          label.setAttribute("for", optionId);
-          label.textContent = option;
-          label.prepend(input);
+get_data()
+print(get_avg())
 
-          optionsDiv.appendChild(label);
-        });
+For input: 20,30,40,50 what is the result?`,
+    options: ["A. 5.0", "B. 5", "C. NameError", "D. TypeError"],
+    answer: "D"
+  },
+  {
+    question: `Consider the following code:
+def get_names():
+    names = ['Parrot', 'Owl', 'Peacock', 'Maina', 'Crow']
+    return names[2:]
 
-        questionDiv.appendChild(questionText);
-        questionDiv.appendChild(optionsDiv);
-        quizForm.appendChild(questionDiv);
-      });
+def update_names(elements):
+    new_names = []
+    for name in elements:
+        new_names.append(name[:3].upper())
+    return new_names
+
+print(update_names(get_names()))
+
+Find the output.`,
+    options: [
+      "A. ['PEA', 'MAI', 'CRO']",
+      "B. ['PAR', 'PEA']",
+      "C. ['PAR', 'PEA', 'OWL']",
+      "D. ['PAR', 'PEA', 'OWL', 'MAI']"
+    ],
+    answer: "A"
+  },
+  {
+    question: `Consider the following code:
+def my_list(a, lst=[]):
+    lst.append(a)
+    return lst
+
+my_list('Peacock')
+my_list('Parrot')
+print(my_list('Pigeon'))
+
+Which statement should be inserted in place of the definition to get:
+['Peacock', 'Parrot', 'Pigeon']`,
+    options: ["A. a,lst=()", "B. a,lst=[]", "C. a,lst={}", "D. a,lst=0"],
+    answer: "B"
+  },
+  {
+    question: `Consider the following code:
+def f1(x = 0, y = 0):
+    return x + y
+
+Which among the following is incorrect?`,
+    options: [
+      "A. f1()",
+      "B. f1(10)",
+      "C. f1('10', '20')",
+      "D. f1('10')"
+    ],
+    answer: "D"
+  },
+  {
+    question: `Consider the following code:
+def calculate(amount = 6, factor = 3):
+    if amount > 6:
+        return amount * factor
+    else:
+        return amount * factor * 2
+
+Which will give the output 30?`,
+    options: ["A. calculate()", "B. calculate(10)", "C. calculate(5,6)", "D. calculate(6,3)"],
+    answer: "B"
+  },
+  {
+    question: `Find the output of the code:
+def f1(a, b):
+    return a + b
+
+print(f1(b=1, 2))`,
+    options: ["A. 1", "B. 2", "C. 3", "D. Error"],
+    answer: "D"
+  },
+  {
+    question: `Find the output of the code:
+st = 'xyzt'
+
+def f1(s):
+    del s[2]
+    return s
+
+print(f1(st))`,
+    options: ["A. 'yzt'", "B. 'xzt'", "C. 'xyt'", "D. Error"],
+    answer: "D"
+  },
+  {
+    question: `Find the output of the code:
+def f1(x):
+    return 1 if x % 2 != 0 else 2
+
+print(f1(f1(1)))`,
+    options: ["A. 1", "B. 2", "C. None", "D. Error"],
+    answer: "A"
+  },
+  {
+    question: `Which of the following is a proper invocation?
+def fun(a, b, c=0)`,
+    options: ["A. fun(b=0, c=0)", "B. fun(a=1, b=0, c=0)", "C. fun(a=0)", "D. fun(1, c=2)"],
+    answer: "B"
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById("quiz-container");
+  quizQuestions.forEach((q, index) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    let html = `<p><strong>Q${index + 1}:</strong> ${q.question}</p>`;
+    q.options.forEach((opt, i) => {
+      html += `
+        <label>
+          <input type="radio" name="q${index}" value="${opt.charAt(0)}">
+          ${opt}
+        </label><br>`;
+    });
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function submitQuiz() {
+  let score = 0;
+  quizQuestions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && selected.value === q.answer) {
+      score++;
     }
+  });
+  document.getElementById("result").innerText =
+    `You scored ${score} out of ${quizQuestions.length}.`;
+}
 
-    function submitQuiz() {
-      let score = 0;
-      const userAnswers = {};
-      const formData = new FormData(quizForm);
+renderQuiz();
+</script>
 
-      for (let [key, value] of formData.entries()) {
-        userAnswers[key] = value;
-      }
-
-      let resultsHtml = "<h2>Your Results</h2>";
-      quizQuestions.forEach((q, index) => {
-        const questionKey = `question-${index}`;
-        const userAnswer = userAnswers[questionKey];
-        const correctAnswer = q.answer;
-
-        if (userAnswer === correctAnswer) {
-          score++;
-          resultsHtml += `<p><span class="correct">✅ Question ${index + 1}: Correct!</span></p>`;
-        } else {
-          resultsHtml += `<p><span class="incorrect">❌ Question ${index + 1}: Incorrect.</span> The correct answer was ${correctAnswer}.</p>`;
-        }
-      });
-
-      resultsHtml += `<hr><h3>Final Score: ${score} out of ${quizQuestions.length}</h3>`;
-      resultsContainer.innerHTML = resultsHtml;
-      resultsContainer.style.display = "block";
-      resultsContainer.scrollIntoView({ behavior: "smooth" });
-    }
-
-    document.addEventListener("DOMContentLoaded", renderQuiz);
-  </script>
 </body>
 </html>
